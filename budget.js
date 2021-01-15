@@ -1,10 +1,16 @@
 
+function activateWindowOnClick(event) {
+    window.onclick = windowfunction;
+    event.stopPropagation();
+}
 
-var totalBudget, expenses, income, month, currentDate, date, totalIncome, clearBudget, key
+var totalBudget, expenses, income, month, currentDate, date, totalIncome, clearBudget, totalExpense, totalPercent
 
 clearBudget = false
 totalBudget = 0;
 totalIncome = 0
+totalExpense = 0
+totalPercent = 0
 currentIncome = 0
 incomeArr = []
 expensesArr = []
@@ -46,9 +52,13 @@ button.addEventListener('click', function () {
 
     } else if (option.value == "exp") {
 
-        var description = document.querySelector('.add__description').value
-        var sum = document.querySelector('.add__value').value
-        subExpenses(description, sum)
+        if (incomeArr.length > 0) {
+            var description = document.querySelector('.add__description').value
+            var sum = document.querySelector('.add__value').value
+            subExpenses(description, sum)
+        }
+
+
 
     }
 
@@ -66,8 +76,8 @@ function addIncome(description, value) {
     this.description = description,
         this.value = Number(value)
 
+    currentIncome += this.value
     totalIncome += this.value
-    currentIncome = totalIncome
 
 
 
@@ -121,15 +131,15 @@ function subExpenses(description, value, valuePercent) {
     document.querySelector('.budget__expenses--value').textContent = '-' + expenses.toLocaleString();
     document.querySelector('.budget__expenses--percentage').textContent = totalPercent.toLocaleString() + "%";
 
-    template(expensesArr, 'expenses')
-
-
-
-
-
+    template(expensesArr, 'expense')
 
 
 }
+
+
+
+
+
 
 
 var incomeList = document.querySelector('.income__list')
@@ -143,15 +153,15 @@ function template(array, text) {
 
 
     const markUp = `  <div class="item clearfix" id="${text}-${i}">
-                             <div class="item__description">${array[i].description}</div>
+                             <div class="item__description">${array[i].description.toLocaleString()}</div>
                              <div class="right clearfix">
-                                <div class="item__value">+ ${array[i].value}</div>
-                                ${(text === 'expenses') ?
-            `<div class="item__percentage"> 
+                                <div class="item__value">${(text === 'income') ? `+` : `-`} ${array[i].value.toLocaleString()}</div>
+                                ${(text === 'expense') ?
+                                `<div class="item__percentage"> 
                                         ${(array[i].valuePercent.toFixed(1)).toLocaleString()}% </div>` : ""}
                                
                                 <div class="item__delete">
-                                    <button id="${i}"  class="item__delete--btn delBtn-${i}">
+                                    <button id="${i}"  class="item__delete--btn delBtn-${text}-${i}">
                                         <i class="ion-ios-close-outline"></i>
                                     </button>
                                 </div>
@@ -159,34 +169,121 @@ function template(array, text) {
                         </div>`;
 
 
-    if (text === 'income') {
-        incomeList.insertAdjacentHTML('beforeend', markUp);
-    }
 
-    if (text === 'expenses') {
+    if (text == 'expense') {
+
         expenseList.insertAdjacentHTML('beforeend', markUp);
+
+        var buttonDel = document.querySelector('.delBtn-expense-' + i)
+
+
+        buttonDel.addEventListener('click', deletion)
+
+        function deletion() {
+
+
+            individualNum = buttonDel.id
+
+
+
+            if (text == "expense") {
+
+
+                totalPer = document.querySelector('.budget__expenses--percentage').textContent
+                totalPercent = Number((totalPer.replace('%', "")))
+
+                currentIncome += Number(expensesArr[individualNum].value)
+                expenses -= Number(expensesArr[individualNum].value)
+
+                totalPercent -= Number(expensesArr[individualNum].valuePercent)
+
+                console.log(totalPercent)
+
+                document.querySelector('.budget__expenses--percentage').textContent = '-' + totalPercent.toLocaleString() + "%";
+                document.querySelector('.budget__expenses--value').textContent = '-' + expenses.toLocaleString();
+                document.querySelector('.budget__value').textContent = '-' + currentIncome.toLocaleString();
+            }
+
+
+
+
+
+            document.getElementById("expense-" + individualNum).remove();
+            expensesArr[individualNum] = null
+            //console.log(expensesArr[individualNum])
+        }
     }
 
 
-    var buttonDel = document.querySelector('.delBtn-' + i)
+    if (text === 'income') {
 
-    buttonDel.addEventListener('click', function () {
+        incomeList.insertAdjacentHTML('beforeend', markUp);
 
-        individualNum = buttonDel.id
+        var buttonDel = document.querySelector('.delBtn-income-' + i)
 
-        totalIncome -= incomeArr[individualNum].value
-       
+        buttonDel.addEventListener('click', deletion)
+
+        function deletion() {
+
+            console.log(text)
+            individualNum = buttonDel.id
 
 
-        document.querySelector('.budget__income--value').textContent = '+' + totalIncome.toLocaleString();
-        document.querySelector('.budget__value').textContent = '+' + totalIncome.toLocaleString();
+            if (text == "income") {
+                totalIncome -= incomeArr[individualNum].value
 
-       
-        document.getElementById("income-" + individualNum).remove();
-        incomeArr[individualNum] = null
-        console.log(incomeArr[individualNum])
-        console.log()
-    })
+                document.querySelector('.budget__income--value').textContent = '+' + totalIncome.toLocaleString();
+                document.querySelector('.budget__value').textContent = '+' + totalIncome.toLocaleString();
+            }
+
+
+
+
+
+            document.getElementById("income-" + individualNum).remove();
+            incomeArr[individualNum] = null
+            // console.log(expensesArr[individualNum])
+
+        }
+
+
+    }
+
+
+
+
+
+    // var buttonDel = document.querySelector('.delBtn-' + i)
+
+    // buttonDel.addEventListener('click', deletion)
+
+    // function deletion (){
+
+    //     console.log(text)
+    //     individualNum = buttonDel.id
+    //     // if(text == 'expenses'){
+    //     //     totalIncome += expensesArr[individualNum].value
+
+    //     //     document.querySelector('.budget__income--value').textContent = '+' + totalIncome.toLocaleString();
+    //     //     document.querySelector('.budget__value').textContent = '+' + totalIncome.toLocaleString();
+    //     // }
+
+    //     if(text == "income"){
+    //         totalIncome -= incomeArr[individualNum].value
+
+    //         document.querySelector('.budget__income--value').textContent = '+' + totalIncome.toLocaleString();
+    //         document.querySelector('.budget__value').textContent = '+' + totalIncome.toLocaleString();
+    //     }
+
+
+
+
+
+    //     document.getElementById(text+"-" + individualNum).remove();
+    //     (text + "Arr")[individualNum] = null
+    //     console.log(expensesArr[individualNum])
+
+    // }
 
 
 
