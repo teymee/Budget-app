@@ -43,7 +43,7 @@ button.addEventListener('click', function () {
         var sum = document.querySelector('.add__value').value
 
         addIncome(description, sum)
-        
+
     } else if (option.value == "exp") {
 
         var description = document.querySelector('.add__description').value
@@ -135,23 +135,23 @@ function subExpenses(description, value, valuePercent) {
 var incomeList = document.querySelector('.income__list')
 var expenseList = document.querySelector('.expenses__list')
 
-const template = (array, text) => {
+function template(array, text) {
 
     var i
 
     i = array.length - 1
-    
 
-    const markUp =   `  <div class="item clearfix" id="${text}-${i}">
+
+    const markUp = `  <div class="item clearfix" id="${text}-${i}">
                              <div class="item__description">${array[i].description}</div>
                              <div class="right clearfix">
                                 <div class="item__value">+ ${array[i].value}</div>
-                                ${(text === 'expenses')?
-                                    `<div class="item__percentage"> 
+                                ${(text === 'expenses') ?
+            `<div class="item__percentage"> 
                                         ${(array[i].valuePercent.toFixed(1)).toLocaleString()}% </div>` : ""}
                                
                                 <div class="item__delete">
-                                    <button  onclick="${()=>deduct(array[i])}" class="item__delete--btn">
+                                    <button id="${i}"  class="item__delete--btn delBtn-${i}">
                                         <i class="ion-ios-close-outline"></i>
                                     </button>
                                 </div>
@@ -159,21 +159,40 @@ const template = (array, text) => {
                         </div>`;
 
 
-        if(text === 'income'){
-            incomeList.insertAdjacentHTML('beforeend', markUp);
-        }
+    if (text === 'income') {
+        incomeList.insertAdjacentHTML('beforeend', markUp);
+    }
 
-        if(text === 'expenses'){
-            expenseList.insertAdjacentHTML('beforeend', markUp);
-        }
-    
+    if (text === 'expenses') {
+        expenseList.insertAdjacentHTML('beforeend', markUp);
+    }
+
+
+    var buttonDel = document.querySelector('.delBtn-' + i)
+
+    buttonDel.addEventListener('click', function () {
+
+        individualNum = buttonDel.id
+
+        totalIncome -= incomeArr[individualNum].value
        
+
+
+        document.querySelector('.budget__income--value').textContent = '+' + totalIncome.toLocaleString();
+        document.querySelector('.budget__value').textContent = '+' + totalIncome.toLocaleString();
+
+       
+        document.getElementById("income-" + individualNum).remove();
+        incomeArr[individualNum] = null
+        console.log(incomeArr[individualNum])
+        console.log()
+    })
+
+
+
 }
 
-function deduct (i){
 
-    console.log(i)
-}
 
 
 
@@ -240,15 +259,6 @@ function deduct (i){
 
 
 // }
-
-
-
-
-
-
-
-
-
 
 
 
