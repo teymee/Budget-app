@@ -17,6 +17,12 @@
     clear: both;
 }
 
+.out-anchor{
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
 body {
     color: #555;
     font-family: Open Sans;
@@ -24,6 +30,10 @@ body {
     position: relative;
     height: 100vh;
     font-weight: 400;
+}
+
+.budget-body{
+    overflow: scroll;
 }
 
 .right { float: right; }
@@ -331,11 +341,39 @@ background-color: rgba(0,0,0,0.5);
     width: 45%;
     /* background-color: WHITE; */
     height: 100vh;
+    
    
+}
+
+@keyframes first {
+    from {
+       
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+  }
+
+  .text2{
+    animation: text2 3s 1.5s forwards;
+    margin-left:-600px;
+  }
+
+  @keyframes text2{
+    from {
+        margin-left:-600px;
+    }
+
+    to{
+        margin-left: 30px;
+    }
+
 }
 
 .text{
     margin-top: 200px;
+    
 }
 .text p{
     color: white;
@@ -357,12 +395,18 @@ hr{
     font-family: 'Parisienne', cursive;
     line-height: 90px;
     font-weight: 10px !important;
+  
     
 }
+
+
 
 nav{
    color:white;
    text-align: center;
+   animation: first 1s 0.2s forwards ease-in;
+    
+    opacity: 0;
 }
 
 .check{
@@ -416,7 +460,20 @@ li{
     height: 750px;
     border-radius: 50%;
     background-color: #FFE3D7;
+    animation: semi-circle 3.5s 2.5s forwards;
+    opacity: 0;
 }
+
+
+@keyframes semi-circle {
+    0% {
+        
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+  }
 
 img{
     height: 900px;
@@ -424,12 +481,25 @@ img{
     filter:drop-shadow(8px 8px 10px rgba(48,83,81,0.6));
     position: absolute;
     left: 50%;
-    top:20px;
+    /*   */
     
     transform: translate(-50%);
     /* bottom: 820px; */
+    animation: imgLoad 4.5s 4s forwards ;
+    
    
 }
+
+
+@keyframes imgLoad {
+    0% {
+        top: 700px;
+        /* opacity: 0; */
+    }
+    100% {
+        top: 20px;
+    }
+  }
 
 .second{
     position: relative;
@@ -450,6 +520,9 @@ img{
     
    
     color: black;
+    animation: first 1s 0.2s forwards ease-in;
+    
+    opacity: 0;
 }
 
 .nav-end button{
@@ -483,10 +556,37 @@ button a{
 }
 .one{
     margin-bottom:20px !important;
+    
+    animation: one 3s 1.5s forwards;
+    position: relative;
+    right:-600px;
+}
+
+@keyframes one{
+    from{
+        right:-600px;
+    }
+
+    to{
+        right:0px;
+    }
 }
 
 .two{
     margin-bottom:100px !important;
+    animation: two 3s 1.8s forwards;
+    position: relative;
+    right:-600px;
+}
+
+@keyframes two{
+    from{
+        right:-600px;
+    }
+
+    to{
+        right:0px;
+    }
 }
 
 .card-text{
