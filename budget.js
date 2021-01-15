@@ -201,7 +201,7 @@ function template(array, text) {
 
                 document.querySelector('.budget__expenses--percentage').textContent = '-' + totalPercent.toLocaleString() + "%";
                 document.querySelector('.budget__expenses--value').textContent = '-' + expenses.toLocaleString();
-                document.querySelector('.budget__value').textContent = '-' + currentIncome.toLocaleString();
+                document.querySelector('.budget__value').textContent =   currentIncome.toLocaleString();
             }
 
 
